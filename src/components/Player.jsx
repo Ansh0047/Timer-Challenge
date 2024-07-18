@@ -20,6 +20,7 @@ export default function Player() {
     <section id="player">
       <h2>Welcome {enterPlayerName ?? 'unknown entity'}</h2>
       <p>
+        {/* here i have set the ref prop which will persist a mutable value without causing re-renders.  */}
         <input ref={playerName} type="text"/>
         <button onClick={handleClick}>Set Name</button>
       </p>
