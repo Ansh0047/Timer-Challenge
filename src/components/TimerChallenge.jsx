@@ -1,7 +1,9 @@
 import { useRef, useState } from "react";
+import ResultModal from "./ResultModal";
 
 export default function TimerChallenge({titile, targetTimer}){
     const timer = useRef();
+    const dialog = useRef();
 
     const[timerStarted,setTimerStarted] = useState(false);
     const [timeExpired,setTimeExpired] = useState(false);
@@ -17,6 +19,7 @@ export default function TimerChallenge({titile, targetTimer}){
         timer.current = setTimeout(() => {     // it will return the pointer to the timer runnning
             setTimeExpired(true);
             setTimerStarted(false);
+            dialog.current.showModal();
         }, targetTimer*1000);
     }
 
@@ -26,21 +29,25 @@ export default function TimerChallenge({titile, targetTimer}){
         setTimerStarted(false);
     }
 
-    return <section className="challenge">
-        <h2>{titile}</h2>
-        {timeExpired && <p>You lost!</p>}
-        <p className="challenge-time">
-            {targetTimer} second{targetTimer > 1 ? 's' : ''}
-        </p>
-        <p>
-            {/* in onClick we have used the ternary check if our timer has starte then we have to 
-            point our onClick to handleStop function as it has started else to handleStart */}
-           <button onClick={timerStarted ? handleStop : handleStart}>
-                {timerStarted ? 'Stop' :'Start'} Challenge
-            </button> 
-        </p>
-        <p className={timerStarted ? 'active' : undefined}>
-            {timerStarted ? 'Timer is running...' : 'Timer is inactive'}
-        </p>
-    </section>
+    return <>
+            {/* so if timer got expired we will see the dialog box which shows the output */}
+            {timeExpired && <ResultModal ref={dialog} result='lost' targetTime={targetTimer} />}
+            <section className="challenge">
+                <h2>{titile}</h2>
+                {/* {timeExpired && <p>You lost!</p>} */}
+                <p className="challenge-time">
+                    {targetTimer} second{targetTimer > 1 ? 's' : ''}
+                </p>
+                <p>
+                    {/* in onClick we have used the ternary check if our timer has starte then we have to 
+                    point our onClick to handleStop function as it has started else to handleStart */}
+                <button onClick={timerStarted ? handleStop : handleStart}>
+                        {timerStarted ? 'Stop' :'Start'} Challenge
+                    </button> 
+                </p>
+                <p className={timerStarted ? 'active' : undefined}>
+                    {timerStarted ? 'Timer is running...' : 'Timer is inactive'}
+                </p>
+            </section>
+        </>
 }
