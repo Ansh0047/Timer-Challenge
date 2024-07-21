@@ -17,5 +17,4 @@ const ResultModal = forwardRef(function ResultModal({result, targetTime }, ref) 
   );
 })
 
-
 export default ResultModal;
